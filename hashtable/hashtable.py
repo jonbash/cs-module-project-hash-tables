@@ -52,8 +52,12 @@ class HashTable:
 
         Implement this, and/or DJB2.
         """
-
-        # Your code here
+        hsh = self.__fnv_offset_basis
+        key_bytes = [char.encode("hex") for char in key]
+        for byte in key_bytes:
+            hsh *= self.__fnv_prime
+            hsh ^= byte
+        return hsh
 
 
     def djb2(self, key):
