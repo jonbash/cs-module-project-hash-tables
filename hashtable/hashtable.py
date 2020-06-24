@@ -22,6 +22,10 @@ class HashTable:
 
     def __init__(self, capacity):
         # Your code here
+        self.capacity = capacity
+        self.__buckets = [None] * capacity
+        self.__fnv_offset_basis = 14695981039346656037
+        self.__fnv_prime = 1099511628211
 
 
     def get_num_slots(self):
