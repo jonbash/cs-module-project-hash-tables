@@ -87,14 +87,14 @@ class HashTable:
         """
         if self.get_load_factor() > 0.7:
             self.resize(self.capacity * 2)
-        entry = HashTableEntry(key, value)
+        new_entry = HashTableEntry(key, value)
         bucket = self.__buckets[self.hash_index(key)]
         if bucket is not None and bucket.key != key:
             while bucket.next is not None and bucket.key != key:
                 bucket = bucket.next
-            bucket.next = entry
+            bucket.next = new_entry
         else:
-            self.__buckets[self.hash_index(key)] = entry
+            self.__buckets[self.hash_index(key)] = new_entry
         self.__current_count += 1
 
     def delete(self, key):
@@ -122,6 +122,8 @@ class HashTable:
         else:
             self.__buckets[hash_index] = None
         self.__current_count -= 1
+        if self.get_load_factor() < 0.2:
+            self.resize(max(self.capacity // 2, MIN_CAPACITY))
 
     def get(self, key):
         """
@@ -147,6 +149,8 @@ class HashTable:
 
         Implement this.
         """
+        if self.capacity == new_capacity:
+            return
         entries = [entry for entry in self.__buckets if entry is not None]
         self.capacity = new_capacity
         self.__current_count = 0
