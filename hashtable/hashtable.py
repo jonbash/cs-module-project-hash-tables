@@ -38,7 +38,7 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        return self.capacity
 
 
     def get_load_factor(self):
@@ -47,7 +47,8 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        items = [item for item in self.__buckets if item is not None]
+        return len(items)
 
 
     def fnv1(self, key):
