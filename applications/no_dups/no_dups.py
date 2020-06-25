@@ -1,6 +1,17 @@
 def no_dups(s):
-    # Your code here
+    lookup = {}
+    words = s.split()
+    result = ""
 
+    for word in words:
+        if lookup.get(word) is None:
+            lookup[word] = word
+            if result == "":
+                result = word
+            else:
+                result += f" {word}"
+
+    return result
 
 
 if __name__ == "__main__":
