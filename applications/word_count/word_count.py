@@ -6,7 +6,7 @@ ignored_chars = [
 
 def __check_word(word, word_counts):
     word = word.lower()
-    for i, char in enumerate(word):
+    for char in word:
         if char in ignored_chars:
             word = word.replace(char, '')
     if word == "":
