@@ -1,9 +1,6 @@
 import random
 
 
-# TODO: Make sure quotation marks are opened and closed
-
-
 def _analyze(words):
     word_list = words.split()
     next_words = {}
@@ -17,22 +14,51 @@ def _analyze(words):
     return next_words
 
 
-def _construct_sentence(analysis):
-    words_list = list(analysis.keys())
-    starts = [word for word in words_list if _is_start_word(word)]
-
-    current = random.choice(starts)
+def _create_sentence(starts, analysis):
     done = False
-    print(current, end=" ")
+    current = None
+    quote_opened = False
 
     while not done:
-        possibles = analysis[current]
-        current = random.choice(possibles)
-        if _is_stop_word(current):
-            done = True
-            print(current)
+        if current is None:
+            current = random.choice(starts)
+            output = []
+            candidate = current
         else:
-            print(current, end=" ")
+            possibles = analysis[current]
+            candidate = random.choice(possibles)
+
+        open_use = _will_open_quote_can_use(candidate, quote_opened)
+        if open_use is None:
+            if len(output) == 0:
+                current = None
+            else:
+                current = output.pop()
+            continue
+        elif open_use:
+            quote_opened = True
+
+        close_use = _will_close_quote_can_use(candidate, quote_opened)
+        if close_use is None:
+            if len(output) == 0:
+                current = None
+            else:
+                current = output.pop()
+            continue
+        elif close_use:
+            quote_opened = False
+
+        is_stop = _is_stop_word(candidate)
+        if is_stop and quote_opened:
+            if len(output) == 0:
+                current = None
+            else:
+                current = output.pop()
+            continue
+        done = is_stop
+        output.append(candidate)
+        current = candidate
+    return output
 
 
 def _is_start_word(word):
@@ -44,16 +70,39 @@ def _is_stop_word(word):
     return word[-1] in ends or (word[-1] == '"' and word[-2] in ends)
 
 
+def _will_open_quote_can_use(word, quote_opened):
+    if not quote_opened and word[0] == '"':
+        return True
+    elif word[0] != '"':
+        return False
+    else:
+        return None
+
+
+def _will_close_quote_can_use(word, quote_opened):
+    if word[-1] != '"':
+        return False
+    elif quote_opened and word[-1] == '"':
+        return True
+    else:
+        return None
+
+
 def make_random_sentences(count, training):
     analysis = _analyze(training)
+    words_list = list(analysis.keys())
+    starts = [word for word in words_list if _is_start_word(word)]
+
     for _ in range(count):
-        _construct_sentence(analysis)
+        sentence = _create_sentence(starts, analysis)
+        for word in sentence:
+            print(word, end=" ")
+        print("")
 
 
 # ####-------------#### #
 
 
-# Read in all the words in one go
 with open("input.txt") as f:
     words = f.read()
     make_random_sentences(5, words)
