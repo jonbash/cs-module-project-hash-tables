@@ -14,6 +14,40 @@ def _analyze(words):
     return next_words
 
 
+def _find_different_word(output):
+    if len(output) == 0:
+        return None
+    else:
+        return output.pop()
+
+
+def _is_start_word(word):
+    return word[0].isupper() or (word[0] == '"' and word[1].isupper())
+
+
+def _is_stop_word(word):
+    ends = ['.', '?', '!']
+    return word[-1] in ends or (word[-1] == '"' and word[-2] in ends)
+
+
+def _will_open_quote_can_use(word, quote_opened):
+    if not quote_opened and word[0] == '"':
+        return True
+    elif word[0] != '"':
+        return False
+    else:
+        return None
+
+
+def _will_close_quote_can_use(word, quote_opened):
+    if word[-1] != '"':
+        return False
+    elif quote_opened and word[-1] == '"':
+        return True
+    else:
+        return None
+
+
 def _create_sentence(starts, analysis):
     done = False
     current = None
@@ -59,33 +93,6 @@ def _create_sentence(starts, analysis):
         output.append(candidate)
         current = candidate
     return output
-
-
-def _is_start_word(word):
-    return word[0].isupper() or (word[0] == '"' and word[1].isupper())
-
-
-def _is_stop_word(word):
-    ends = ['.', '?', '!']
-    return word[-1] in ends or (word[-1] == '"' and word[-2] in ends)
-
-
-def _will_open_quote_can_use(word, quote_opened):
-    if not quote_opened and word[0] == '"':
-        return True
-    elif word[0] != '"':
-        return False
-    else:
-        return None
-
-
-def _will_close_quote_can_use(word, quote_opened):
-    if word[-1] != '"':
-        return False
-    elif quote_opened and word[-1] == '"':
-        return True
-    else:
-        return None
 
 
 def make_random_sentences(count, training):
