@@ -152,7 +152,7 @@ class HashTable:
         """
         if self.capacity == new_capacity:
             return
-        print(f"resizing from {self.capacity} to {new_capacity}")
+
         entries = []
         for entry in self.__buckets:
             if entry is not None:
