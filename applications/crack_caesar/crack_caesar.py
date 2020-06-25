@@ -42,8 +42,6 @@ def translate_text(enc_text, key):
 
 
 def find_cipher_key(enc_text):
-    length = len(enc_text)
-    p_point = 1/length
     char_freqs = {}
 
     for char in enc_text:
@@ -52,9 +50,9 @@ def find_cipher_key(enc_text):
             continue
         current_freq = char_freqs.get(char)
         if current_freq is None:
-            char_freqs[char] = p_point
+            char_freqs[char] = 1
         else:
-            char_freqs[char] = current_freq + p_point
+            char_freqs[char] = current_freq + 1
     char_freq_pairs = [(char, char_freqs[char]) for char in char_freqs.keys()]
     char_freq_pairs = sort_char_freq_pairs(char_freq_pairs)
 
