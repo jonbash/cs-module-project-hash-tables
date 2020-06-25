@@ -1,6 +1,28 @@
-def word_count(s):
-    # Your code here
+ignored_chars = [
+    '"', ':', ';', ',', '.', '-', '+', '=', '/', '\\', '|', '[', ']', '{', '}',
+    '(', ')', '*', '^', '&'
+]
 
+
+def __check_word(word, word_counts):
+    word = word.lower()
+    for i, char in enumerate(word):
+        if char in ignored_chars:
+            word = word.replace(char, '')
+    if word == "":
+        return
+    elif word_counts.get(word) is None:
+        word_counts[word] = 1
+    else:
+        word_counts[word] += 1
+
+
+def word_count(s):
+    words = s.split()
+    word_counts = {}
+    for word in words:
+        __check_word(word, word_counts)
+    return word_counts
 
 
 if __name__ == "__main__":
