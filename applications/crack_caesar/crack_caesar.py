@@ -53,8 +53,7 @@ def find_cipher_key(enc_text):
             char_freqs[char] = 1
         else:
             char_freqs[char] = current_freq + 1
-    char_freq_pairs = [(char, char_freqs[char]) for char in char_freqs.keys()]
-    char_freq_pairs = sort_char_freq_pairs(char_freq_pairs)
+    char_freq_pairs = sort_char_freq_pairs(list(char_freqs.items()))
 
     return {char: letters[i] for i, (char, _) in enumerate(char_freq_pairs)}
 

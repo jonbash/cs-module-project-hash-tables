@@ -55,15 +55,13 @@ def sort_word_count_pairs(arr):
 
 def word_count_histogram(s):
     word_counts = word_count(s)
-    word_count_pairs = []
     longest_word = ""
 
     for word in word_counts.keys():
-        word_count_pairs.append((word, word_counts[word]))
         if len(word) > len(longest_word):
             longest_word = word
 
-    word_count_pairs = sort_word_count_pairs(word_count_pairs)
+    word_count_pairs = sort_word_count_pairs(list(word_counts.items()))
 
     output_string = ""
     for pair in word_count_pairs:
