@@ -1,29 +1,23 @@
 #!/usr/bin/env python3
 
-class BitReverser:
-    """
-    Reverses the bits of 8-bit numbers
-    (e.g., `0b01001011` becomes `0b11010010`)
-    """
-    def __init__(self):
-        self.componentizers = {}
-        for i in range(8):
-            self.componentizers[i] = 1 << i
-
-    def bit_reverse(self, n):
-        result = 0
-        for i in range(8):
-            component = n & self.componentizers[i]
-            if i < 4:
-                rev_component = component << (7 - (2 * i))
-            else:
-                rev_component = component >> ((2 * i) - 7)
-            result |= rev_component
-        return result
+def bit_reverse(n):
+    """Reverse binary representation of 8-bit integer"""
+    result = 0
+    # loop through each bit
+    for i in range(8):
+        # isolate i'th bit of int
+        component = n & (1 << i)  # 'bitwise and' and 'bit shift'
+        # shift bit to new correct position
+        if i < 4:
+            rev_component = component << (7 - (2 * i))
+        else:
+            rev_component = component >> ((2 * i) - 7)
+        # 'add' shifted bit back to result
+        result |= rev_component  # 'bitwise or'
+    return result
 
 
-rev = BitReverser()
 for x in range(256):
     print(f"x: {x}")
     print(f"bin: {format(x, '#010b')}")
-    print(f"rev: {format(rev.bit_reverse(x), '#010b')}")
+    print(f"rev: {format(bit_reverse(x), '#010b')}")
