@@ -4,7 +4,7 @@ def no_dups(s):
     result = ""
 
     for word in words:
-        if lookup.get(word) is None:
+        if word not in lookup:
             lookup[word] = word
             if result == "":
                 result = word

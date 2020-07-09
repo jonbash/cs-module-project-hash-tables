@@ -3,7 +3,7 @@ import math
 import random
 
 
-lookup = HashTable(50000)
+lookup = {}
 
 
 def slowfun_too_slow(x, y):
@@ -20,18 +20,17 @@ def slowfun(x, y):
     Rewrite slowfun_too_slow() in here so that the program produces the same
     output, but completes quickly instead of taking ages to run.
     """
-    key = f"{x}, {y}"
+    key = (x, y)
 
-    v = lookup.get(key)
-    if v is not None:
-        return v
+    if key in lookup:
+        return lookup[key]
 
     v = math.pow(x, y)
     v = math.factorial(v)
     v //= (x + y)
     v %= 982451653
 
-    lookup.put(key, v)
+    lookup[key] = v
 
     return v
 
