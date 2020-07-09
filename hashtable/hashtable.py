@@ -43,7 +43,6 @@ class HashTable:
     def get_load_factor(self):
         """
         Return the load factor for this hash table.
-
         Implement this.
         """
         return self.__current_count / self.capacity
@@ -55,10 +54,11 @@ class HashTable:
         Implement this, and/or DJB2.
         """
         hsh = self.__fnv_offset_basis
-        key_bytes = [ord(char) for char in key]
-        for byte in key_bytes:
+        for char in key:
+            byte = ord(char)
             hsh *= self.__fnv_prime
             hsh ^= byte
+            hsh &= 0xffffffffffffffff
         return hsh
 
     def djb2(self, key):
